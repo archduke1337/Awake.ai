@@ -5,6 +5,8 @@ import { querySchema } from "@shared/schema";
 import { aiRouter } from "./services/ai-router";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check route for quick runtime checks
+  app.get('/api/health', (_req, res) => res.json({ status: 'ok' }));
   
   // Get all conversations
   app.get("/api/conversations", async (req, res) => {

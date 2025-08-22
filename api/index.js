@@ -18,8 +18,34 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Register your API routes
-await registerRoutes(app);
+// Lazy initialize routes to avoid top-level await errors during module
+// evaluation on serverless platforms (Vercel). This ensures the function
+// doesn't crash if an env var is missing or if compilation/transpilation
+// happens during the build phase.
+let _initialized = false;
+let _initPromise = null;
 
-// Export for Vercel
-export default app;
+async function ensureInitialized() {
+	if (_initialized) return;
+	if (_initPromise) return _initPromise;
+
+	_initPromise = (async () => {
+		try {
+			await registerRoutes(app);
+			_initialized = true;
+		} catch (err) {
+			// Re-throw so Vercel logs the error and the function fails clearly.
+			console.error('Failed to initialize API routes:', err);
+			throw err;
+		}
+	})();
+
+	return _initPromise;
+}
+
+// Export a request handler the Vercel Node builder can call. It will
+// initialize routes once, then forward all requests to the Express app.
+export default async function handler(req, res) {
+	await ensureInitialized();
+	return app(req, res);
+}
