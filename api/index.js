@@ -4,7 +4,10 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 // Import your server components
-import { registerRoutes } from '../server/routes.js';
+// Import the server routes TypeScript source. Vercel's Node builder will
+// transpile TypeScript when bundling serverless functions. Using the .ts
+// import here ensures the builder can find and compile the module.
+import { registerRoutes } from '../server/routes.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
