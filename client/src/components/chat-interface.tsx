@@ -3,8 +3,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { MoreVertical, ThumbsUp, ThumbsDown, Copy } from "lucide-react";
 import MessageInput from "./message-input";
-import { Brain, Bot } from "lucide-react";
+import { Bot } from "lucide-react";
 import type { Message, Conversation } from "@shared/schema";
+import logoImage from "@assets/download_1755887584877.png";
 
 interface ChatInterfaceProps {
   conversationId: string | null;
@@ -142,8 +143,8 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
           {/* Welcome Message */}
           {messages.length === 0 && !isLoadingConversation && (
             <div className="text-center py-8" data-testid="welcome-message">
-              <div className="w-16 h-16 bg-gradient-to-br from-awake-blue to-awake-dark-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Brain className="text-white w-8 h-8" />
+              <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <img src={logoImage} alt="Awake" className="w-16 h-16 rounded-2xl" />
               </div>
               <h3 className="text-2xl font-bold text-awake-text mb-2" data-testid="text-welcome-title">Welcome to AWAKE</h3>
               <p className="text-awake-light-text max-w-md mx-auto" data-testid="text-welcome-description">
