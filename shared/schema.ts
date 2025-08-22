@@ -33,7 +33,9 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
 
 export const querySchema = z.object({
   message: z.string().min(1, "Message cannot be empty"),
-  conversationId: z.string().optional(),
+  // Accept undefined or null from clients (some clients send `null` when
+  // no conversation is selected). Use nullable().optional() so both are allowed.
+  conversationId: z.string().nullable().optional(),
 });
 
 export type InsertConversation = z.infer<typeof insertConversationSchema>;
