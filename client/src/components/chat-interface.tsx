@@ -105,7 +105,7 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
       <div className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-awake-text" data-testid="text-chat-title">AI Assistant</h2>
+            <h2 className="text-lg font-semibold text-awake-text" data-testid="text-chat-title">General</h2>
             <p className="text-sm text-awake-light-text" data-testid="text-chat-subtitle">Powered by multiple AI models</p>
           </div>
           <div className="flex items-center space-x-4">
@@ -148,7 +148,7 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
               </div>
               <h3 className="text-2xl font-bold text-awake-text mb-2" data-testid="text-welcome-title">Welcome to AWAKE</h3>
               <p className="text-awake-light-text max-w-md mx-auto" data-testid="text-welcome-description">
-                I'm your unified AI assistant, powered by multiple intelligence models. I can help with coding, creativity, research, and more.
+            Hi! I'm Awake, an idea born to shape the future of your reality. By bringing together the minds of many AIs, I can help you with everything from coding to creativity, problem-solving to productivity. Think of me as a unified companion — always learning, adapting, and growing with you.
               </p>
             </div>
           )}
