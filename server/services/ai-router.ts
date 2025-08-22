@@ -11,7 +11,7 @@ class AIRouter {
   private genai: GoogleGenAI;
   
   constructor() {
-    this.genai = new GoogleGenAI(process.env.GEMINI_API_KEY || "");
+    this.genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
   }
 
   async routeQuery(message: string): Promise<AIResponse> {
@@ -34,10 +34,11 @@ class AIRouter {
       };
     } catch (error) {
       console.error("AI Router error:", error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       return {
         content: "I apologize, but I'm experiencing technical difficulties right now. Please try again in a moment.",
         model: "fallback",
-        metadata: { error: error.message }
+        metadata: { error: errorMessage }
       };
     }
   }

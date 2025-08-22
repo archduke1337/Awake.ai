@@ -38,11 +38,11 @@ export default function Sidebar({
 
   return (
     <div
-      className="w-64 bg-white border-r border-gray-200 flex flex-col"
+      className="w-64 bg-white border-r border-awake-border flex flex-col"
       data-testid="sidebar-container"
     >
       {/* Logo and Brand */}
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-awake-border">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 flex items-center justify-center">
             <img src={logoImage} alt="Awake" className="w-10 h-10 rounded-xl" data-testid="logo-icon" />
@@ -68,7 +68,7 @@ export default function Sidebar({
       <div className="p-4">
         <Button
           onClick={onNewChat}
-          className="w-full bg-awake-blue hover:bg-awake-dark-blue text-white font-medium py-3 px-4 rounded-xl transition-colors duration-200"
+          className="w-full bg-awake-primary hover:bg-awake-secondary text-white font-medium py-3 px-4 rounded-xl transition-colors duration-200"
           data-testid="button-new-chat"
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -107,9 +107,9 @@ export default function Sidebar({
               <div
                 key={conversation.id}
                 onClick={() => onConversationSelect(conversation.id)}
-                className={`p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-150 ${
+                className={`p-3 rounded-lg hover:bg-awake-hover cursor-pointer transition-colors duration-150 ${
                   currentConversationId === conversation.id
-                    ? "border-l-2 border-awake-blue bg-blue-50"
+                    ? "border-l-2 border-awake-primary bg-awake-surface"
                     : ""
                 }`}
                 data-testid={`conversation-item-${conversation.id}`}
@@ -133,7 +133,7 @@ export default function Sidebar({
       </div>
 
       {/* User Profile Section */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-awake-border">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
             <span

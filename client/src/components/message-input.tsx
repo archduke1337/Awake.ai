@@ -53,7 +53,7 @@ export default function MessageInput({ onSendMessage, disabled = false }: Messag
   };
 
   return (
-    <div className="bg-white border-t border-gray-200 p-4" data-testid="message-input-container">
+    <div className="bg-white border-t border-awake-border p-4" data-testid="message-input-container">
       <div className="max-w-4xl mx-auto">
         <form onSubmit={handleSubmit} className="flex items-end space-x-4" data-testid="form-message">
           <div className="flex-1 relative">
@@ -63,7 +63,7 @@ export default function MessageInput({ onSendMessage, disabled = false }: Messag
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask me anything... I'll route your question to the best AI model"
-              className="resize-none border border-gray-300 rounded-2xl px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-awake-blue focus:border-transparent max-h-32 min-h-[48px]"
+              className="resize-none border border-awake-border rounded-2xl px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-awake-primary focus:border-transparent max-h-32 min-h-[48px]"
               rows={1}
               disabled={disabled}
               data-testid="input-message"
@@ -86,7 +86,7 @@ export default function MessageInput({ onSendMessage, disabled = false }: Messag
           <Button 
             type="submit" 
             disabled={!inputValue.trim() || disabled}
-            className="bg-awake-blue hover:bg-awake-dark-blue disabled:bg-gray-300 text-white rounded-2xl p-3 transition-colors duration-200 flex items-center justify-center"
+            className="bg-awake-primary hover:bg-awake-secondary disabled:bg-gray-300 text-white rounded-2xl p-3 transition-colors duration-200 flex items-center justify-center"
             data-testid="button-send"
           >
             <Send className="w-4 h-4" />
@@ -101,7 +101,7 @@ export default function MessageInput({ onSendMessage, disabled = false }: Messag
               variant="ghost"
               size="sm"
               onClick={() => handleSuggestionClick(suggestion.prompt)}
-              className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-sm text-awake-text rounded-full transition-colors duration-150 h-auto"
+              className="px-3 py-1.5 bg-awake-surface hover:bg-awake-hover text-sm text-awake-text rounded-full transition-colors duration-150 h-auto"
               disabled={disabled}
               data-testid={`button-suggestion-${index}`}
             >

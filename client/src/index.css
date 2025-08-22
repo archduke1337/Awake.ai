@@ -10,9 +10,9 @@
   --card-foreground: hsl(210 25% 7.8431%);
   --popover: hsl(0 0% 100%);
   --popover-foreground: hsl(210 25% 7.8431%);
-  --primary: hsl(215 91% 59%);
+  --primary: hsl(0 0% 0%);
   --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(210 25% 7.8431%);
+  --secondary: hsl(0 0% 15%);
   --secondary-foreground: hsl(0 0% 100%);
   --muted: hsl(240 1.9608% 90%);
   --muted-foreground: hsl(210 25% 7.8431%);
@@ -41,13 +41,16 @@
   --font-mono: Menlo, monospace;
   --radius: 1.3rem;
 
-  /* AWAKE specific colors */
-  --awake-blue: hsl(215 91% 59%);
-  --awake-dark-blue: hsl(224 75% 57%);
-  --awake-green: hsl(158 64% 52%);
-  --awake-gray: hsl(210 20% 98%);
-  --awake-text: hsl(217 19% 27%);
-  --awake-light-text: hsl(215 8% 47%);
+  /* AWAKE specific colors - Black & White theme */
+  --awake-primary: hsl(0 0% 0%);        /* Pure black */
+  --awake-secondary: hsl(0 0% 15%);     /* Dark gray */
+  --awake-accent: hsl(0 0% 85%);        /* Light gray */
+  --awake-background: hsl(0 0% 100%);   /* Pure white */
+  --awake-surface: hsl(0 0% 98%);       /* Off white */
+  --awake-text: hsl(0 0% 0%);           /* Black text */
+  --awake-light-text: hsl(0 0% 40%);    /* Gray text */
+  --awake-border: hsl(0 0% 90%);        /* Light border */
+  --awake-hover: hsl(0 0% 95%);         /* Hover state */
 }
 
 .dark {
@@ -83,33 +86,33 @@
   }
 }
 
-/* Custom AWAKE styles */
-.awake-blue {
-  color: var(--awake-blue);
+/* Custom AWAKE styles - Black & White Theme */
+.awake-primary {
+  color: var(--awake-primary);
 }
 
-.bg-awake-blue {
-  background-color: var(--awake-blue);
+.bg-awake-primary {
+  background-color: var(--awake-primary);
 }
 
-.border-awake-blue {
-  border-color: var(--awake-blue);
+.border-awake-primary {
+  border-color: var(--awake-primary);
 }
 
-.awake-dark-blue {
-  color: var(--awake-dark-blue);
+.awake-secondary {
+  color: var(--awake-secondary);
 }
 
-.bg-awake-dark-blue {
-  background-color: var(--awake-dark-blue);
+.bg-awake-secondary {
+  background-color: var(--awake-secondary);
 }
 
-.awake-green {
-  color: var(--awake-green);
+.awake-accent {
+  color: var(--awake-accent);
 }
 
-.bg-awake-green {
-  background-color: var(--awake-green);
+.bg-awake-accent {
+  background-color: var(--awake-accent);
 }
 
 .awake-text {
@@ -120,8 +123,16 @@
   color: var(--awake-light-text);
 }
 
-.bg-awake-gray {
-  background-color: var(--awake-gray);
+.bg-awake-surface {
+  background-color: var(--awake-surface);
+}
+
+.border-awake-border {
+  border-color: var(--awake-border);
+}
+
+.hover\:bg-awake-hover:hover {
+  background-color: var(--awake-hover);
 }
 
 /* Animation for typing indicator */

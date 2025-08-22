@@ -159,7 +159,7 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
               {message.role === "user" ? (
                 <div className="flex justify-end">
                   <div className="max-w-xs lg:max-w-md">
-                    <div className="bg-awake-blue text-white rounded-2xl rounded-br-md px-4 py-3">
+                    <div className="bg-awake-primary text-white rounded-2xl rounded-br-md px-4 py-3">
                       <p className="text-sm whitespace-pre-wrap" data-testid={`text-user-message-${message.id}`}>
                         {message.content}
                       </p>
@@ -175,13 +175,13 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
                 <div className="flex justify-start">
                   <div className="max-w-xs lg:max-w-2xl">
                     <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-awake-green to-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                      <div className="w-8 h-8 bg-awake-secondary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                         <Bot className="text-white w-4 h-4" />
                       </div>
-                      <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                      <div className="bg-white border border-awake-border rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
                         {message.metadata && (message.metadata as any)?.routingReason && (
                           <div className="flex items-center space-x-2 mb-2">
-                            <span className="text-xs font-medium text-awake-green" data-testid={`text-routing-info-${message.id}`}>
+                            <span className="text-xs font-medium text-awake-secondary" data-testid={`text-routing-info-${message.id}`}>
                               {(message.metadata as any).routingReason}
                             </span>
                           </div>
@@ -199,7 +199,7 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
                         <Button 
                           variant="ghost" 
                           size="sm"
-                          className="text-awake-light-text hover:text-awake-text p-1 h-auto"
+                          className="text-awake-light-text hover:text-awake-text hover:bg-awake-hover p-1 h-auto"
                           data-testid={`button-thumbs-up-${message.id}`}
                         >
                           <ThumbsUp className="w-3 h-3" />
@@ -207,7 +207,7 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
                         <Button 
                           variant="ghost" 
                           size="sm"
-                          className="text-awake-light-text hover:text-awake-text p-1 h-auto"
+                          className="text-awake-light-text hover:text-awake-text hover:bg-awake-hover p-1 h-auto"
                           data-testid={`button-thumbs-down-${message.id}`}
                         >
                           <ThumbsDown className="w-3 h-3" />
@@ -216,7 +216,7 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
                           variant="ghost" 
                           size="sm"
                           onClick={() => copyToClipboard(message.content)}
-                          className="text-awake-light-text hover:text-awake-text p-1 h-auto"
+                          className="text-awake-light-text hover:text-awake-text hover:bg-awake-hover p-1 h-auto"
                           data-testid={`button-copy-${message.id}`}
                         >
                           <Copy className="w-3 h-3" />
@@ -234,10 +234,10 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
             <div className="flex justify-start" data-testid="loading-message">
               <div className="max-w-xs lg:max-w-md">
                 <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-awake-green to-emerald-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <div className="w-8 h-8 bg-awake-secondary rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                     <Bot className="text-white w-4 h-4" />
                   </div>
-                  <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                  <div className="bg-white border border-awake-border rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
                     <div className="flex items-center space-x-2">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-awake-light-text rounded-full animate-bounce"></div>
