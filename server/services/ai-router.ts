@@ -9,13 +9,25 @@ interface AIResponse {
 
 class AIRouter {
   private genai: GoogleGenAI;
+  private disabled: boolean = false;
   
   constructor() {
-    this.genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+    const key = process.env.GEMINI_API_KEY || "";
+    if (!key) {
+      console.warn('GEMINI_API_KEY not set — AI calls will be disabled');
+      // Still construct client with empty key to avoid null errors in some environments
+      this.genai = new GoogleGenAI({ apiKey: "" });
+      this.disabled = true;
+    } else {
+      this.genai = new GoogleGenAI({ apiKey: key });
+    }
   }
 
   async routeQuery(message: string): Promise<AIResponse> {
     try {
+      if (this.disabled) {
+        throw new Error('Gemini API key not configured');
+      }
       // Simple routing logic: code-related queries use gemini-2.5-pro, others use gemini-2.5-flash
       const isCodeQuery = this.isCodeRelated(message);
       const model = isCodeQuery ? "gemini-2.5-pro" : "gemini-2.5-flash";
@@ -60,14 +72,40 @@ class AIRouter {
     const systemPrompt = "You are AWAKE, a helpful AI assistant that provides clear, accurate, and friendly responses. When helping with code, provide practical solutions with explanations.";
     
     const fullPrompt = `${systemPrompt}\n\nUser: ${message}`;
-    
-    const response = await this.genai.models.generateContent({
-      model: model,
-      contents: fullPrompt,
-    });
+    try {
+      const response = await this.genai.models.generateContent({
+        model: model,
+        contents: fullPrompt,
+      });
 
-    const content = response.text || "I couldn't generate a response.";
-    return { content };
+      // The genai client can return content in different shapes depending on SDK version.
+      // Try common fields, then fall back to serializing the response for debugging.
+      let content: string | undefined = undefined;
+      // common text field
+      if (response && typeof (response as any).text === 'string') content = (response as any).text;
+      // some SDKs reply in `output` or `output_text`
+      if (!content && (response as any).output_text) content = (response as any).output_text;
+      // nested candidates/choices
+      if (!content && Array.isArray((response as any).candidates) && (response as any).candidates[0]) {
+        content = (response as any).candidates[0].content || (response as any).candidates[0].text;
+      }
+      // Deeply nested formats
+      if (!content && (response as any).output && Array.isArray((response as any).output) && (response as any).output[0]) {
+        content = ((response as any).output[0].content && (response as any).output[0].content[0] && (response as any).output[0].content[0].text) || undefined;
+      }
+
+      if (!content) {
+        // Nothing useful found — log full response to aid debugging and return fallback text
+        console.error('Unexpected Gemini response shape:', JSON.stringify(response));
+        content = "I couldn't generate a response.";
+      }
+
+      return { content };
+    } catch (err) {
+      // Re-throw so outer handler wraps into a friendly error message
+      console.error('callGemini failed:', err);
+      throw err;
+    }
   }
 
   private humanizeResponse(content: string, isCodeQuery: boolean): string {
