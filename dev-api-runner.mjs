@@ -1,5 +1,6 @@
 import express from 'express';
-import app from './api/index.js';
+// Import the TypeScript API entry. Run this file with `npx tsx dev-api-runner.mjs`
+import app from './api/index.ts';
 
 const server = express();
 server.use(app);
