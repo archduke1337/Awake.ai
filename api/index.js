@@ -7,7 +7,9 @@ import path from 'path';
 // Import the server routes TypeScript source. Vercel's Node builder will
 // transpile TypeScript when bundling serverless functions. Using the .ts
 // import here ensures the builder can find and compile the module.
-import { registerRoutes } from '../server/routes.ts';
+// Do not import server code at module evaluation time. We'll dynamically
+// import `registerRoutes` inside `ensureInitialized()` so Vercel's build
+// and module evaluation phases don't execute server-side initialization.
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +33,12 @@ async function ensureInitialized() {
 
 	_initPromise = (async () => {
 		try {
+			// dynamic import at runtime
+			const mod = await import('../server/routes.ts');
+			const registerRoutes = mod.registerRoutes;
+			if (typeof registerRoutes !== 'function') {
+				throw new Error('registerRoutes is not a function');
+			}
 			await registerRoutes(app);
 			_initialized = true;
 		} catch (err) {
@@ -46,6 +54,13 @@ async function ensureInitialized() {
 // Export a request handler the Vercel Node builder can call. It will
 // initialize routes once, then forward all requests to the Express app.
 export default async function handler(req, res) {
-	await ensureInitialized();
-	return app(req, res);
+	try {
+		await ensureInitialized();
+		return app(req, res);
+	} catch (err) {
+		console.error('API handler error:', err);
+		res.statusCode = 500;
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify({ message: 'Internal Server Error', error: (err && err.message) || String(err) }));
+	}
 }
