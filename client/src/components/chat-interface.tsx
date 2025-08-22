@@ -37,12 +37,21 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
 
   const sendMessageMutation = useMutation({
     mutationFn: async (message: string) => {
+      const requestBody: { message: string; conversationId?: string } = { message };
+      if (conversationId) {
+        requestBody.conversationId = conversationId;
+      }
+      
       const response = await fetch("/api/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, conversationId }),
+        body: JSON.stringify(requestBody),
       });
-      if (!response.ok) throw new Error("Failed to send message");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: "Unknown error" }));
+        console.error("API Error:", errorData);
+        throw new Error(errorData.message || "Failed to send message");
+      }
       return response.json() as Promise<QueryResponse>;
     },
     onMutate: () => {
