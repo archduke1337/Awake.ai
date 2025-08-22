@@ -147,7 +147,6 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
           {messages.map((message) => (
             <div key={message.id} data-testid={`message-${message.id}`}>
               {message.role === "user" ? (
-                <!-- User Message -->
                 <div className="flex justify-end">
                   <div className="max-w-xs lg:max-w-md">
                     <div className="bg-awake-blue text-white rounded-2xl rounded-br-md px-4 py-3">
@@ -163,7 +162,6 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
                   </div>
                 </div>
               ) : (
-                <!-- AI Message -->
                 <div className="flex justify-start">
                   <div className="max-w-xs lg:max-w-2xl">
                     <div className="flex items-start space-x-3">
@@ -171,10 +169,10 @@ export default function ChatInterface({ conversationId, onConversationCreate }: 
                         <Bot className="text-white w-4 h-4" />
                       </div>
                       <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
-                        {message.metadata?.routingReason && (
+                        {message.metadata && (message.metadata as any)?.routingReason && (
                           <div className="flex items-center space-x-2 mb-2">
                             <span className="text-xs font-medium text-awake-green" data-testid={`text-routing-info-${message.id}`}>
-                              {message.metadata.routingReason}
+                              {(message.metadata as any).routingReason}
                             </span>
                           </div>
                         )}
