@@ -7,9 +7,8 @@ import path from 'path';
 // Import the server routes TypeScript source. Vercel's Node builder will
 // transpile TypeScript when bundling serverless functions. Using the .ts
 // import here ensures the builder can find and compile the module.
-// Do not import server code at module evaluation time. We'll dynamically
-// import `registerRoutes` inside `ensureInitialized()` so Vercel's build
-// and module evaluation phases don't execute server-side initialization.
+// Static import so Vercel's bundler includes server files.
+import { apiRouter } from '../server/routes.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,38 +23,18 @@ app.use(express.urlencoded({ extended: false }));
 // evaluation on serverless platforms (Vercel). This ensures the function
 // doesn't crash if an env var is missing or if compilation/transpilation
 // happens during the build phase.
-let _initialized = false;
-let _initPromise = null;
-
-async function ensureInitialized() {
-	if (_initialized) return;
-	if (_initPromise) return _initPromise;
-
-	_initPromise = (async () => {
-		try {
-			// dynamic import at runtime
-			const mod = await import('../server/routes.ts');
-			const registerRoutes = mod.registerRoutes;
-			if (typeof registerRoutes !== 'function') {
-				throw new Error('registerRoutes is not a function');
-			}
-			await registerRoutes(app);
-			_initialized = true;
-		} catch (err) {
-			// Re-throw so Vercel logs the error and the function fails clearly.
-			console.error('Failed to initialize API routes:', err);
-			throw err;
-		}
-	})();
-
-	return _initPromise;
+// Mount the router at module initialization so the function handler is small
+// and Vercel's bundler includes all referenced files.
+try {
+	app.use('/api', apiRouter);
+} catch (err) {
+	console.error('Error mounting apiRouter:', err);
 }
 
 // Export a request handler the Vercel Node builder can call. It will
 // initialize routes once, then forward all requests to the Express app.
-export default async function handler(req, res) {
+export default function handler(req, res) {
 	try {
-		await ensureInitialized();
 		return app(req, res);
 	} catch (err) {
 		console.error('API handler error:', err);
